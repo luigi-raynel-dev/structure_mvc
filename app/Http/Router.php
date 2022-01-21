@@ -181,7 +181,7 @@ class Router
       // Retorna o erro lançado no try acima
       return new Response($error->getCode(), $error->getMessage());
     }
-  }+
+  }
 
   /**
    * Método responsável por retornar a URL atual

@@ -31,7 +31,7 @@
     public function __construct($middlewares,$controller,$controllerArgs){
       $this->middlewares = $middlewares;
       $this->controller = $controller;
-      $this->controllerArgs =$controllerArgs;
+      $this->controllerArgs = $controllerArgs;
     }
 
     /*
