@@ -5,6 +5,7 @@
   use \App\Utils\View;
   use \App\Model\Entity\User;
   use \App\Session\Admin\Login as SessionAdminLogin;  
+  use \App\Controller\Admin\Alert;
 
   class Login extends Page{
 
@@ -16,9 +17,7 @@
      */
     public static function getLogin($request, $errorMessage = null){
       // STATUS DE LOGIN
-      $status = !is_null($errorMessage) ? View::render('admin/login/status',[
-        'message' => $errorMessage
-      ]) : '';
+      $status = !is_null($errorMessage) ? Alert::getError($errorMessage) : '';
 
       // CONTEÚDO DA PÁGINA DE LOGIN
       $content = View::render('admin/login',[
@@ -38,7 +37,7 @@
       $postVars = $request->getPostVars();
       $email = $postVars['email'] ?? '';
       $password = $postVars['password'] ?? '';
-
+      
       // BUSCA USUÁRIO PELO E-MAIL
       $user = User::getUserByEmail($email);
 

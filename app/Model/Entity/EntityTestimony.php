@@ -50,6 +50,35 @@
     }
 
     /**
+     * Método responsável por atualizar a instancia atual no banco de dados
+     * @return boolean
+     */
+    public function update(){
+           
+      // ATUALIZA O DEPOIMENTO NO DB
+      return (new Database('testimonies'))->update("id = ".$this->id,[
+        'name' => $this->name,
+        'message' => $this->message
+      ]);
+      
+      // SUCESSO
+      return true;
+    }
+
+    /**
+     * Método responsável por excluir a instancia atual no banco de dados
+     * @return boolean
+     */
+    public function delete(){
+           
+      // APAGA O DEPOIMENTO NO DB
+      return (new Database('testimonies'))->delete("id = ".$this->id);
+      
+      // SUCESSO
+      return true;
+    }
+
+    /**
      * Método responsável por retornar depoimentos
      * @param string $where
      * @param string $order
@@ -59,6 +88,15 @@
      */
     public static function getTestimonies($where = null, $order = null, $limit = null, $fields = ''){
       return (new Database('testimonies'))->select($where,$order,$limit,$fields);
+    }
+
+    /**
+     * Método responsável por retornar um depoimento com base no seu ID
+     * @param integer $id
+     * @return Testimony
+     */
+    public static function getTestimonyById($id){
+      return self::getTestimonies("id = $id")->fetchObject(self::class);
     }
 
 

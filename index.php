@@ -13,8 +13,11 @@
   // Inclui as rotas do painel admin
   include __DIR__.'/routes/admin.php';
 
+  // INCLUI ROTAS DA API
+  include __DIR__.'/routes/api.php';
+
   // Imprime o Response da rota
   $router->run()
     ->sendResponse();
-
+    
 ?>

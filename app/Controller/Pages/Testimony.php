@@ -26,7 +26,7 @@
       $currentPage = $queryParams['page'] ?? 1;
 
       // INSTÂNCIA DE PAGINAÇÃO
-      $pagination = new Pagination($totalAmount,$currentPage,3);
+      $pagination = new Pagination($totalAmount,$currentPage,5);
 
       // RESULTADOS DA PÁGINA
       $results = EntityTestimony::getTestimonies(null,'id DESC',$pagination->getLimit());

@@ -1,51 +1,16 @@
 <?php 
 
-  use App\Http\Response;
-  use App\Controller\Admin;
+  // INCLUI AS ROTAS DE HOME
+  include __DIR__.'/admin/home.php';
 
-  // Rota Admin
-  $router->get('/admin',[
-    'middlewares' => [
-      'require-admin-login'
-    ],
-    function(){
-      return new Response(200,'Admin ;)');
-    }
-  ]);
+  // INCLUI AS ROTAS DE LOGIN
+  include __DIR__.'/admin/login.php';
 
-  // Rota Admin/Login (View Login)
-  $router->get('/admin/login',[
-    'middlewares' => [
-      'require-admin-logout'
-    ],
-    function($request){
-      return new Response(200,Admin\Login::getLogin($request));
-    }
-  ]);
+  // INCLUI AS ROTAS DE DEPOIMENTOS
+  include __DIR__.'/admin/testimonies.php';
 
-  // Rota Admin/Login (Verify login)
-  $router->post('/admin/login',[
-    'middlewares' => [
-      'require-admin-logout'
-    ],
-    function($request){
-      return new Response(200,Admin\Login::setLogin($request));
-    }
-  ]);
-
-  // Rota Admin/Logout
-  $router->get('/admin/logout',[
-    'middlewares' => [
-      'require-admin-login'
-    ],
-    function($request){
-      return new Response(200,Admin\Login::setLogout($request));
-    }
-  ]);
-
-
-
-
+  // INCLUI AS ROTAS DE USUÁRIOS
+  include __DIR__.'/admin/users.php';
 
 
 ?>
