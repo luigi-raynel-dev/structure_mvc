@@ -129,7 +129,7 @@ class Router
   }
 
   /**
-   * Método responsável por retornar os dados da rota atual
+   * Método reponsável por retornar os dados da rota atual
    */
   private function getRoute(): array
   {

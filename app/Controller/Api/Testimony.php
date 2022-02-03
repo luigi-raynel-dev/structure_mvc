@@ -114,6 +114,67 @@
       ];
     }
 
+    /**
+     * Método responsável por atualizar um depoimento
+     * @param Request $request
+     * @param int $int
+     * @return array
+     */
+    public static function setEditTestimony($request,$id){
+      // POST VARS
+      $postVars = $request->getPostVars();
+
+      // VALIDA OS CAMPOS OBRIGATÓRIOS
+      if(!isset($postVars['name']) || !isset($postVars['message'])){
+        throw new \Exception("Os campos nome e mensagem são obrigatórios",400);
+      }
+
+      // VALIDA SE O DEPOIMENTO EXISTE
+      $testimony = EntityTestimony::getTestimonyById($id);
+
+      // VALIDA A instancia
+      if(!$testimony instanceof EntityTestimony){
+        throw new \Exception("Depoimento $id não encontrado!",404);
+      }
+      // ATUALIZA DEPOIMENTO
+      $testimony->name = $postVars['name'];
+      $testimony->message = $postVars['message'];
+      // CADASTRAR DEPOIMENTO NO DB
+      $testimony->update();
+
+      // RETORNA OS DETALHES DO DEPOIMENTO ATUALIZADO
+      return [
+        'success' => true,
+        'id' => (int)$testimony->id,
+        'name' => $testimony->name,
+        'date' => $testimony->date,
+        'message' => $testimony->message
+      ];
+    }
+
+    /**
+     * Método responsável por apagar um depoimento
+     * @param Request $request
+     * @param int $int
+     * @return array
+     */
+    public static function setDeleteTestimony($request,$id){
+       // VALIDA SE O DEPOIMENTO EXISTE
+      $testimony = EntityTestimony::getTestimonyById($id);
+
+      // VALIDA A instancia
+      if(!$testimony instanceof EntityTestimony){
+        throw new \Exception("Depoimento $id não encontrado!",404);
+      }
+      // Exclui DEPOIMENTO
+      $testimony->delete();
+
+      // RETORNA O SUCESSO DA EXCLUSÃO
+      return [
+        'success' => true
+      ];
+    }
+
 
 
 

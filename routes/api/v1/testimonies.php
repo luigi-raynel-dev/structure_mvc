@@ -34,14 +34,25 @@
     }
   ]);
 
-  // Rota de cadastro de depoimento
+  // Rota de edição de depoimento
   $router->put('/api/v1/testimonies/{id}',[
     'middlewares' => [
       'api',
       'user-basic-auth'
     ],
-    function($request){
-      return new Response(201,Api\Testimony::setEditTestimony($request),'application/json');
+    function($request,$id){
+      return new Response(200,Api\Testimony::setEditTestimony($request,$id),'application/json');
+    }
+  ]);
+
+  // Rota de exclusão de depoimento
+  $router->delete('/api/v1/testimonies/{id}',[
+    'middlewares' => [
+      'api',
+      'user-basic-auth'
+    ],
+    function($request,$id){
+      return new Response(200,Api\Testimony::setDeleteTestimony($request,$id),'application/json');
     }
   ]);
 
