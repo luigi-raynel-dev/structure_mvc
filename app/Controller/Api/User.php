@@ -83,6 +83,22 @@
     }
 
     /**
+     * Método responsável por retornar o usuário logado
+     * @param Request $request
+     * @return array
+     */
+    public static function getCurrentUser($request){
+      // BUSCA USUÁRIO ATUAL
+      $user = $request->user;
+
+      return [
+        'id' => (int)$user->id,
+        'name' => $user->name,
+        'email' => $user->email,
+      ];
+    }
+
+    /**
      * Método responsável por cadastrar um usuário
      * @param Request $request
      * @return array
@@ -92,15 +108,26 @@
       $postVars = $request->getPostVars();
 
       // VALIDA OS CAMPOS OBRIGATÓRIOS
-      if(!isset($postVars['name']) || !isset($postVars['message'])){
-        throw new \Exception("Os campos nome e mensagem são obrigatórios",400);
+      if(!isset($postVars['name']) && !isset($postVars['email']) && !isset($postVars['password'])){
+        throw new \Exception("Os campos nome, email e senha são obrigatórios",400);
       }
 
-      // NOVO USUÁRIO
+      $name = $postVars['name'] ?? '';
+      $email = $postVars['email'] ?? '';
+      $password = $postVars['password'] ?? '';
+
+      // VALIDA O EMAIL DO USUÁRIO
+      $user = EntityUser::getUserByEmail($email);
+      if($user instanceof EntityUser){
+        // SE EXISTE O USUÁRIO RETORNA UMA EXCEPTION
+        throw new \Exception('Este email já está cadastrado!',400);
+      }
+
+      // NOVA INSTÂNCIA DE USUÁRIO
       $user = new EntityUser;
-      $user->name = $postVars['name'];
-      $user->message = $postVars['message'];
-      // CADASTRAR USUÁRIO NO DB
+      $user->name = $name;
+      $user->email = $email;
+      $user->password = password_hash($password, PASSWORD_DEFAULT);
       $user->register();
 
       // RETORNA OS DETALHES DO USUÁRIO
@@ -108,8 +135,7 @@
         'success' => true,
         'id' => (int)$user->id,
         'name' => $user->name,
-        'date' => $user->date,
-        'message' => $user->message
+        'email' => $user->email
       ];
     }
 
@@ -124,21 +150,31 @@
       $postVars = $request->getPostVars();
 
       // VALIDA OS CAMPOS OBRIGATÓRIOS
-      if(!isset($postVars['name']) || !isset($postVars['message'])){
-        throw new \Exception("Os campos nome e mensagem são obrigatórios",400);
+      if(!isset($postVars['name']) && !isset($postVars['email']) && !isset($postVars['password'])){
+        throw new \Exception("Os campos nome, email e senha são obrigatórios",400);
       }
 
-      // VALIDA SE O USUÁRIO EXISTE
+      $name = $postVars['name'] ?? '';
+      $email = $postVars['email'] ?? '';
+      $password = $postVars['password'] ?? '';
+
+      // VALIDA O EMAIL DO USUÁRIO
       $user = EntityUser::getUserById($id);
-
-      // VALIDA A instancia
-      if(!$user instanceof User){
-        throw new \Exception("Usuário $id não encontrado!",404);
+      if(!$user instanceof EntityUser){
+        // SE NÃO EXISTE O USUÁRIO RETORNA UMA EXCEPTION
+        throw new \Exception("O usuário $id não foi encontrado.",404);
       }
-      // ATUALIZA USUÁRIO
-      $user->name = $postVars['name'];
-      $user->message = $postVars['message'];
-      // CADASTRAR USUÁRIO NO DB
+
+      // VALIDA O ID DO USUÁRIO É DIFERENTE QUE O ID DA ROTA DA API
+      $userEmail = EntityUser::getUserByEmail($email);
+      if($userEmail instanceof EntityUser && $userEmail->id != $user->$id){
+        // SE NÃO EXISTE O USUÁRIO RETORNA UMA EXCEPTION
+        throw new \Exception("O email $email está em uso!",404);
+      }
+
+      $user->name = $name;
+      $user->email = $email;
+      $user->password = password_hash($password, PASSWORD_DEFAULT);
       $user->update();
 
       // RETORNA OS DETALHES DO USUÁRIO ATUALIZADO
@@ -146,8 +182,7 @@
         'success' => true,
         'id' => (int)$user->id,
         'name' => $user->name,
-        'date' => $user->date,
-        'message' => $user->message
+        'email' => $user->email
       ];
     }
 
@@ -162,9 +197,14 @@
       $user = EntityUser::getUserById($id);
 
       // VALIDA A instancia
-      if(!$user instanceof User){
+      if(!$user instanceof EntityUser){
         throw new \Exception("Usuário $id não encontrado!",404);
       }
+
+      if($user->id === $request->user->id){
+        throw new \Exception("Não é possível excluir seu próprio usuário",404);
+      }
+
       // Exclui USUÁRIO
       $user->delete();
 

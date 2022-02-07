@@ -27,13 +27,14 @@ View::init([
   'URL' => URL
 ]);
 
-// Define o mapeamento de middlewaresS
+// Define o mapeamento de middlewares
 MiddlewareQueue::setMap([
   'maintenance' => App\Http\Middleware\Maintenance::class,
   'require-admin-logout' => App\Http\Middleware\RequireAdminLogout::class,
   'require-admin-login' => App\Http\Middleware\RequireAdminLogin::class,
   'api' => App\Http\Middleware\Api::class,
-  'user-basic-auth' => App\Http\Middleware\UserBasicAuth::class
+  'user-basic-auth' => App\Http\Middleware\UserBasicAuth::class,
+  'jwt-auth' => App\Http\Middleware\JWTAuth::class
 ]);
 
 // Define o mapeamento de middlewares

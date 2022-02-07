@@ -27,7 +27,7 @@
 
       // VALIDA A SENHA E RETORNA USUÁRIO
       return password_verify($_SERVER['PHP_AUTH_PW'],$user->password) ? 
-      $user :  false;
+      $user : false;
       
     } 
 
@@ -44,7 +44,7 @@
       }
 
       // EMITE O ERRO DE USUÁRIO E SENHA
-      throw new \Exception("Usuário ou Senha inválidos", 403);
+      throw new \Exception("Usuário 3 ou Senha inválidos", 403);
       
     } 
 
