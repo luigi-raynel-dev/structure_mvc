@@ -6,7 +6,8 @@
   // Rota de listagem de depoimentos
   $router->get('/api/v1/testimonies',[
     'middlewares' => [
-      'api'
+      'api',
+      'cache'
     ],
     function($request){
       return new Response(200,Api\Testimony::getTestimonies($request),'application/json');
@@ -16,7 +17,8 @@
   // Rota de consulta individual de um depoimento
   $router->get('/api/v1/testimonies/{id}',[
     'middlewares' => [
-      'api'
+      'api',
+      'cache'
     ],
     function($request,$id){
       return new Response(200,Api\Testimony::getTestimony($request,$id),'application/json');

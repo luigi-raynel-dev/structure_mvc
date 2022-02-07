@@ -34,7 +34,8 @@ MiddlewareQueue::setMap([
   'require-admin-login' => App\Http\Middleware\RequireAdminLogin::class,
   'api' => App\Http\Middleware\Api::class,
   'user-basic-auth' => App\Http\Middleware\UserBasicAuth::class,
-  'jwt-auth' => App\Http\Middleware\JWTAuth::class
+  'jwt-auth' => App\Http\Middleware\JWTAuth::class,
+  'cache' => App\Http\Middleware\Cache::class,
 ]);
 
 // Define o mapeamento de middlewares

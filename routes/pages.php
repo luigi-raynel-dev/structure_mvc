@@ -5,9 +5,6 @@
 
   // Rota Home
   $router->get('/',[
-    'middlewares' => [
-      'maintenance'
-    ],
     function(){
       return new Response(200,Pages\Home::getHome());
     }
@@ -15,6 +12,9 @@
 
   // Rota Sobre
   $router->get('/sobre',[
+    'middlewares' => [
+      'cache'
+    ],
     function(){
       return new Response(200,Pages\About::getAbout());
     }
@@ -22,6 +22,9 @@
 
   // Rota Depoimentos
   $router->get('/depoimentos',[
+    'middlewares' => [
+      'cache'
+    ],
     function($request){
       return new Response(200,Pages\Testimony::getTestimonies($request));
     }
